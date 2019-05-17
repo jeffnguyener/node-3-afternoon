@@ -3,8 +3,13 @@ const express = require('express')
 const massive = require('massive')
 const { SERVER_PORT, CONNECTION_STRING } = process.env
 const app = express()
+const cont = require('./controller')
 
 app.use(express.json())
+
+app.post('/api/products', cont.create)
+app.get('/api/product/:id', cont.getOne)
+app.get('/api/products', cont.getAll)
 
 massive(CONNECTION_STRING)
     .then((dbInstance) => {
