@@ -1,55 +1,60 @@
 module.exports = {
-    create: (req, res) => {
-        const db = req.app.get('db')
+    create: (req, res, next) => {
+        const dbInstance = req.app.get('db')
         const { name, description, price, image_url } = req.body
-        db.create_products({ name, description, price, image_url }).then((products) => {
+        dbInstance.create_products({ name, description, price, image_url }).then((products) => {
             res.status(200).send(products)
         })
-            .catch(error => {
-                if (error) throw (error);
+            .catch(err => {
+                res.status(500).send({ errorMessage: "Error" });
+                console.log(err);
             })
     },
 
-    getOne: (req, res) => {
-        const db = req.app.get('db')
+    getOne: (req, res, next) => {
+        const dbInstance = req.app.get('db')
         const { id } = req.params
-        db.read_product_id(id).then((product) => {
+        dbInstance.read_product_id(id).then((product) => {
             res.status(200).send(product)
         })
-            .catch(error => {
-                if (error) throw (error);
+            .catch(err => {
+                res.status(500).send({ errorMessage: "Error" });
+                console.log(err);
             })
     },
 
-    getAll: (req, res) => {
-        const db = req.app.get('db')
-        db.read_products().then((products) => {
+    getAll: (req, res, next) => {
+        const dbInstance = req.app.get('db')
+        dbInstance.read_products().then(products => 
             res.status(200).send(products)
-        })
-            .catch(error => {
-                if (error) throw (error);
+        )
+            .catch(err => {
+                res.status(500).send({ errorMessage: "Error" });
+                console.log(err);
             })
     },
 
-    update: (req, res) => {
-        const db = req.app.get('db')
+    update: (req, res, next) => {
+        const dbInstance = req.app.get('db')
         const { params, query } = req
-        db.update_product(params.id, query.desc).then((product) => {
+        dbInstance.update_product(params.id, query.desc).then((product) => {
             res.status(200).send(product)
         })
-            .catch(error => {
-                if (error) throw (error);
+            .catch(err => {
+                res.status(500).send({ errorMessage: "Error" });
+                console.log(err);
             })
     },
 
-    delete: (req, res) => {
-        const db = req.app.get('db')
+    delete: (req, res, next) => {
+        const dbInstance = req.app.get('db')
         const { id } = req.params
-        db.delete_product().then((product) => {
+        dbInstance.delete_product(id).then((product) => {
             res.status(200).send(product)
         })
-            .catch(error => {
-                if (error) throw (error);
+            .catch(err => {
+                res.status(500).send({ errorMessage: "Error" });
+                console.log(err);
             })
     }
 }
