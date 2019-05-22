@@ -16,7 +16,7 @@ app.delete('/api/products/:id', cont.delete)
 massive(CONNECTION_STRING)
     .then(dbInstance => {
         app.set('db', dbInstance)
-        console.log('database set!')
+        console.log('Database set!')
     })
     .catch(err => console.log(err));
 
